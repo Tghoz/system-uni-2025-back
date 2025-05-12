@@ -19,7 +19,6 @@ func (r *UserRepository) CreateUser(user *model.User) error {
 	return r.db.Create(user).Error
 }
 
-// En internal/auth/repository/user_repository.go
 func (r *UserRepository) GetUserByEmail(ctx context.Context, email string) (*model.User, error) {
 	var user model.User
 	result := r.db.WithContext(ctx).Where("email = ?", email).First(&user)
@@ -28,3 +27,5 @@ func (r *UserRepository) GetUserByEmail(ctx context.Context, email string) (*mod
 	}
 	return &user, nil
 }
+
+//! crrear mas funciones para el repo
