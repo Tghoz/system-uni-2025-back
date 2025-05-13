@@ -12,6 +12,6 @@ func UserRouter(router *gin.Engine, authRepo repo.Auth_Repo) { // Usar interfaz 
 	r := router.Group("/api/v1/user")
 
 	// Handlers reciben la interfaz
-	r.GET("/", handler.GetUserByEmail(authRepo))
-	r.POST("/", handler.CreateUserHandler(authRepo))
+	r.POST("/login", handler.LoginUserHandler(authRepo))
+	r.POST("/register", handler.CreateUserHandler(authRepo))
 }

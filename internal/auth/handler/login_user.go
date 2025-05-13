@@ -1,0 +1,60 @@
+package handler
+
+import (
+	"system/internal/auth/repo"
+	"time"
+
+	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt/v5"
+	"golang.org/x/crypto/bcrypt"
+)
+
+// Estructura para recibir credenciales
+var credentials struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
+func LoginUserHandler(authRepo repo.Auth_Repo) gin.HandlerFunc {
+	return func(c *gin.Context) {
+
+		// Parsear el JSON
+		if err := c.ShouldBindJSON(&credentials); err != nil {
+			c.JSON(400, gin.H{"error": "Datos inválidos"})
+			return
+		}
+
+		// Buscar usuario por email
+		user, err := authRepo.GetUserByEmail(c.Request.Context(), credentials.Email)
+		if err != nil {
+			// No revelar si el usuario existe o no (por seguridad)
+			c.JSON(401, gin.H{"error": "Direccion de correo no existe"})
+			return
+		}
+
+		// Comparar contraseña con hash
+		if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(credentials.Password)); err != nil {
+			c.JSON(401, gin.H{"error": "Contraseña incorrecta"})
+			return
+		}
+
+		// Generar token JWT (ejemplo usando la biblioteca "github.com/golang-jwt/jwt")
+		token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+			"sub": user.ID,
+			"exp": time.Now().Add(time.Hour * 24).Unix(), // Expira en 24 horas
+		})
+
+		// Firmar el token con una clave secreta
+		tokenString, err := token.SignedString([]byte("papito mi rey"))
+		if err != nil {
+			c.JSON(500, gin.H{"error": "Error al generar el token"})
+			return
+		}
+
+		// Respuesta con el token
+		c.JSON(200, gin.H{
+			"token": tokenString,
+			"user":  user,
+		})
+	}
+}
