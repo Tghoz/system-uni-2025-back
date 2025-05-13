@@ -2,12 +2,12 @@ package handler
 
 import (
 	"system/internal/auth/model"
-	"system/internal/auth/repo/postgre"
+	"system/internal/auth/repo"
 
 	"github.com/gin-gonic/gin"
 )
 
-func CreateUserHandler(repo *postgre.UserRepository) gin.HandlerFunc {
+func CreateUserHandler(authRepo repo.Auth_Repo) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var user model.User
 		if err := c.ShouldBindJSON(&user); err != nil {
@@ -15,7 +15,7 @@ func CreateUserHandler(repo *postgre.UserRepository) gin.HandlerFunc {
 			return
 		}
 		// Usar el repositorio para guardar en la DB
-		if err := repo.CreateUser(&user); err != nil {
+		if err := authRepo.CreateUser(c.Request.Context(), &user); err != nil {
 			c.JSON(500, gin.H{"error": "Error al crear usuario"})
 			return
 		}

@@ -1,12 +1,10 @@
 package main
 
 import (
-	"system/internal/auth/handler"
+	"system/cmd/api/routers"
 	"system/internal/auth/model"
 	"system/internal/auth/repo/postgre"
 	"system/internal/platform/db"
-
-	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -16,18 +14,8 @@ func main() {
 
 	repo := postgre.NewUserRepository(database)
 
-	setupRouter(repo)
+	routers.SetupRouter(repo)
 
 	defer db.DisconnectDB(database)
 
-}
-
-func setupRouter(userRepo *postgre.UserRepository) {
-	router := gin.Default()
-	// Ruta para crear un usuario
-	router.POST("/users", handler.CreateUserHandler(userRepo))
-	
-	router.GET("/users/email", handler.GetUserByEmail(userRepo))
-
-	router.Run(":4000")
 }
