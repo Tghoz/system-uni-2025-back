@@ -2,10 +2,10 @@ package handler
 
 import (
 	"system/internal/auth/repo"
-	"time"
+	"system/pkg/jwt"
 
 	"github.com/gin-gonic/gin"
-	"github.com/golang-jwt/jwt/v5"
+	// "github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -39,13 +39,8 @@ func LoginUserHandler(authRepo repo.Auth_Repo) gin.HandlerFunc {
 		}
 
 		// Generar token JWT (ejemplo usando la biblioteca "github.com/golang-jwt/jwt")
-		token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-			"sub": user.ID,
-			"exp": time.Now().Add(time.Hour * 24).Unix(), // Expira en 24 horas
-		})
+		tokenString, err := jwt.GenerateToken(user.ID.String())
 
-		// Firmar el token con una clave secreta
-		tokenString, err := token.SignedString([]byte("papito mi rey"))
 		if err != nil {
 			c.JSON(500, gin.H{"error": "Error al generar el token"})
 			return
