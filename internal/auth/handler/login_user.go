@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"net/http"
 	"system/internal/auth/repo"
 	"system/pkg/jwt"
 
@@ -39,16 +40,21 @@ func LoginUserHandler(authRepo repo.Auth_Repo) gin.HandlerFunc {
 
 		// Generar token JWT (ejemplo usando la biblioteca "github.com/golang-jwt/jwt")
 		tokenString, err := jwt.GenerateToken(user.ID.String())
-
 		if err != nil {
 			c.JSON(500, gin.H{"error": "Error al generar el token"})
 			return
 		}
+		c.SetSameSite(http.SameSiteLaxMode) // Defensa CSRF
+		c.SetCookie("token", tokenString, -1, "/", "localhost", true, true)
+		// Parámetros:
+		// - Nombre: "token"
+		// - Valor: tokenString
+		// - Duración: 3600 segundos (1 hora)
+		// - Ruta: "/"
+		// - Dominio: "localhost" (ajusta en producción)
+		// - Secure: true (solo HTTPS)
+		// - HttpOnly: true (no accesible desde JS)
 
-		// Respuesta con el token
-		c.JSON(200, gin.H{
-			"token": tokenString,
-			"user":  user,
-		})
+		c.JSON(200, gin.H{"message": "Login exitoso"})
 	}
 }

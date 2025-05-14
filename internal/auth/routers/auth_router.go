@@ -15,5 +15,4 @@ func UserRouter(router *gin.Engine, authRepo repo.Auth_Repo) { // Usar interfaz 
 	r.POST("/login", handler.LoginUserHandler(authRepo))
 	r.POST("/register", handler.CreateUserHandler(authRepo))
 
-	r.GET("/", handler.GetAllUsersHandler(authRepo))
 }
