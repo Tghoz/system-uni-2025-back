@@ -30,3 +30,18 @@ func (r *AuthPostgresRepo) GetUserByEmail(ctx context.Context, email string) (*m
 	}
 	return &user, nil
 }
+
+func (r *AuthPostgresRepo) GetAllUsers(ctx context.Context) ([]*model.User, error) {
+	var users []*model.User
+
+	
+	result := r.db.WithContext(ctx).
+		Order("created_at DESC"). 
+		Find(&users)
+
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	return users, nil
+}
