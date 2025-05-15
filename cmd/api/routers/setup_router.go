@@ -12,7 +12,14 @@ import (
 func SetupRouter(userRepo repo.Auth_Repo) {
 	r := gin.Default()
 
-	r.Use(cors.Default())
+	r.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:4321"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
+		AllowHeaders:     []string{"Origin", "Content-Type"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true, // 🔥 Esto es lo clave
+
+	}))
 
 	routers.UserRouter(r, userRepo)
 	potect.AdminRouter(r, userRepo)

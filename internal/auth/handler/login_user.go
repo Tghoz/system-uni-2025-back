@@ -6,6 +6,7 @@ import (
 	"system/pkg/jwt"
 
 	"github.com/gin-gonic/gin"
+
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -44,16 +45,16 @@ func LoginUserHandler(authRepo repo.Auth_Repo) gin.HandlerFunc {
 			c.JSON(500, gin.H{"error": "Error al generar el token"})
 			return
 		}
-		c.SetSameSite(http.SameSiteLaxMode) // Defensa CSRF
-		c.SetCookie("token", tokenString, -1, "/", "localhost", true, true)
-		// Parámetros:
-		// - Nombre: "token"
-		// - Valor: tokenString
-		// - Duración: 3600 segundos (1 hora)
-		// - Ruta: "/"
-		// - Dominio: "localhost" (ajusta en producción)
-		// - Secure: true (solo HTTPS)
-		// - HttpOnly: true (no accesible desde JS)
+		c.SetCookie(
+			"token",
+			tokenString,
+			3600,
+			"/",
+			"localhost", // o "" para desarrollo
+			false,       // Secure = false en desarrollo
+			true,        // httpOnly
+		)
+		c.SetSameSite(http.SameSiteLaxMode) // Usa NoneMode solo en producción con HTTPS
 
 		c.JSON(200, gin.H{"message": "Login exitoso"})
 	}
