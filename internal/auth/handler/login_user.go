@@ -40,19 +40,19 @@ func LoginUserHandler(authRepo repo.Auth_Repo) gin.HandlerFunc {
 		}
 
 		// Generar token JWT (ejemplo usando la biblioteca "github.com/golang-jwt/jwt")
-		tokenString, err := jwt.GenerateToken(user.ID.String())
+		tokenString, err := jwt.GenerateToken(user.ID.String(), user.Name, user.Email)
 		if err != nil {
 			c.JSON(500, gin.H{"error": "Error al generar el token"})
 			return
 		}
 		c.SetCookie(
-			"token",
-			tokenString,
-			3600,
-			"/",
-			"localhost", // o "" para desarrollo
-			false,       // Secure = false en desarrollo
-			true,        // httpOnly
+			"authToken", // Nombre
+			tokenString, // Valor
+			3600,        // MaxAge (segundos)
+			"/",         // Path (debe ser "/" para accesibilidad global)
+			"localhost", // Domain (¡sin puerto!)
+			false,       // Secure (true en producción)
+			true,        // HttpOnly (no accesible desde JS)
 		)
 		c.SetSameSite(http.SameSiteLaxMode) // Usa NoneMode solo en producción con HTTPS
 
