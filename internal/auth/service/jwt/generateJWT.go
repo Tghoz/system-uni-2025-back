@@ -1,7 +1,7 @@
 package jwt
 
 import (
-	"system/pkg/jwt/model"
+	"system/internal/auth/service/jwt/model"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
@@ -26,3 +26,5 @@ func GenerateToken(userID, username, email string) (string, error) {
 
 	return token.SignedString(secretKey)
 }
+
+

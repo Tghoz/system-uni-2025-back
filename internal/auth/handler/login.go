@@ -3,7 +3,7 @@ package handler
 import (
 	"net/http"
 	"system/internal/auth/repo"
-	"system/pkg/jwt"
+	"system/internal/auth/service/jwt"
 
 	"github.com/gin-gonic/gin"
 
