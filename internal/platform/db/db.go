@@ -14,7 +14,7 @@ func ConnectDB() *gorm.DB {
 	if err != nil {
 		fmt.Print("Failed to connect to database ಥ_ಥ")
 	} else {
-		fmt.Print("Connected to database (✿◠‿◠)")
+		fmt.Println("Connected to database (✿◠‿◠)")
 	}
 
 	return db
