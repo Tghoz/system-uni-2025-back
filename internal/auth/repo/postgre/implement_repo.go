@@ -2,7 +2,7 @@ package postgre
 
 import (
 	"context"
-	"system/internal/auth/model"
+	"system/internal/models"
 	"system/internal/auth/repo" // Importar la interfaz
 
 	"gorm.io/gorm"

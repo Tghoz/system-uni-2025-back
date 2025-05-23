@@ -2,8 +2,7 @@ package migrate
 
 import (
 	"fmt"
-	account "system/internal/accounts/model"
-	user "system/internal/auth/model"
+	models "system/internal/models"
 	"system/internal/platform/model"
 
 	"gorm.io/gorm"
@@ -58,8 +57,8 @@ func (m *Migrator) seedEssentialData() error {
 
 func (m *Migrator) migrateCoreTables() error {
 	return m.db.AutoMigrate(
-		&account.Account{},
-		&user.User{},
+		&models.Account{},
+		&models.User{},
 		// Agregar otros modelos principales aquí
 	)
 }

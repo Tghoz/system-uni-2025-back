@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"system/internal/auth/model"
+	"system/internal/models"
 	"system/internal/auth/repo"
 
 	"golang.org/x/crypto/bcrypt"

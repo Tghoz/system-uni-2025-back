@@ -2,6 +2,7 @@ package model
 
 import (
 	"fmt"
+
 	"system/internal/platform/model"
 	"system/pkg/helpers"
 	"time"
@@ -11,9 +12,13 @@ import (
 
 type Account struct {
 	helpers.UUID
-	AccountType string `gorm:"size:30;not null"` // Almacena el código (ej: "checking")
-	Balance     float64
-	CreatedAt   time.Time
+	AccountType  string `gorm:"size:30;not null"` // Almacena el código (ej: "checking")
+	CurrencyType string `gorm:"size:30;not null"` // Almacena el código (ej: "checking")
+	Balance      float64
+
+	UserID    uint  // Clave foránea
+	User      *User `gorm:"foreignKey:UserID"` // Relación con el usuario
+	CreatedAt time.Time
 }
 
 func (a *Account) ValidateAccountType(db *gorm.DB) error {

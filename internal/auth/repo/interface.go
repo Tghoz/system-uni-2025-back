@@ -2,7 +2,7 @@ package repo
 
 import (
 	"context"
-	"system/internal/auth/model"
+	"system/internal/models"
 )
 
 type Auth_Repo interface {
