@@ -43,23 +43,22 @@ func seedCurrencies(db *gorm.DB) error {
 
 	values := []model.ReferenceValue{
 		{TypeID: rt.ID, Code: "USD", Name: "Dólar"},
-		{TypeID: rt.ID, Code: "EUR", Name: "Euro"},
+		{TypeID: rt.ID, Code: "Bs", Name: "Bolivares"},
 	}
 
 	return batchInsert(db, values, 100)
 }
 
-func batchInsert(db *gorm.DB, values []model.ReferenceValue, batchSize int) error {
+func batchInsert(db *gorm.DB, values []model.ReferenceValue, _ int) error {
 	return db.Transaction(func(tx *gorm.DB) error {
-		for i := 0; i < len(values); i += batchSize {
-			end := i + batchSize
-			if end > len(values) {
-				end = len(values)
-			}
-
-			chunk := values[i:end]
-			if err := tx.Create(&chunk).Error; err != nil {
-				return err
+		for _, value := range values {
+			// Verificar si el valor ya existe usando TypeID y Code como identificador único
+			result := tx.FirstOrCreate(&value, model.ReferenceValue{
+				TypeID: value.TypeID,
+				Code:   value.Code,
+			})
+			if result.Error != nil {
+				return result.Error
 			}
 		}
 		return nil

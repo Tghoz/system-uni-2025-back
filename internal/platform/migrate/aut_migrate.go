@@ -59,6 +59,7 @@ func (m *Migrator) migrateCoreTables() error {
 	return m.db.AutoMigrate(
 		&models.Account{},
 		&models.User{},
+		&models.Transaction{},
 		// Agregar otros modelos principales aquí
 	)
 }

@@ -12,13 +12,16 @@ import (
 
 type Account struct {
 	helpers.UUID
-	AccountType  string `gorm:"size:30;not null"` // Almacena el código (ej: "checking")
-	CurrencyType string `gorm:"size:30;not null"` // Almacena el código (ej: "checking")
-	Balance      float64
+	AccountType  string  `gorm:"size:30;not null" json:"account_type"`  
+	CurrencyType string  `gorm:"size:30;not null" json:"currency_type"` 
+	Balance      float64 `gorm:"not null;default:0" json:"balance"`    
+	CreatedAt    time.Time
 
-	UserID    uint  // Clave foránea
-	User      *User `gorm:"foreignKey:UserID"` // Relación con el usuario
-	CreatedAt time.Time
+	UserID uint  // Clave foránea
+	User   *User `gorm:"foreignKey:UserID"` // Relación con el usuario
+
+	// Relaciones
+	Transactions []*Transaction `gorm:"foreignKey:AccountID"` // Relación con las transacciones
 }
 
 func (a *Account) ValidateAccountType(db *gorm.DB) error {
