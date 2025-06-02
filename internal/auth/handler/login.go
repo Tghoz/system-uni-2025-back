@@ -2,8 +2,8 @@ package handler
 
 import (
 	"net/http"
-	"system/internal/auth/repo"
 	"system/internal/auth/service/jwt"
+	repo "system/internal/auth/interface"
 
 	"github.com/gin-gonic/gin"
 

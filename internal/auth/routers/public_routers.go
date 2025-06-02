@@ -3,7 +3,7 @@ package routers
 
 import (
 	"system/internal/auth/handler"
-	"system/internal/auth/repo" // Importar paquete de la interfaz
+	repo "system/internal/auth/interface"
 
 	"github.com/gin-gonic/gin"
 )

@@ -60,6 +60,8 @@ func (m *Migrator) migrateCoreTables() error {
 		&models.Account{},
 		&models.User{},
 		&models.Transaction{},
+		&models.Saving{},
+		&models.Planning{},
 		// Agregar otros modelos principales aquí
 	)
 }

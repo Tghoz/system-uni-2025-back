@@ -3,8 +3,8 @@ package routers
 
 import (
 	handler "system/internal/auth/handler/protected_handler"
-	"system/internal/auth/repo"
 	"system/internal/middleware" // Importar el middleware
+	repo "system/internal/auth/interface"
 
 	"github.com/gin-gonic/gin"
 )

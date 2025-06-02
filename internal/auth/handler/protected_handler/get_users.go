@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"system/internal/auth/repo"
+	repo "system/internal/auth/interface"
 
 	"github.com/gin-gonic/gin"
 )

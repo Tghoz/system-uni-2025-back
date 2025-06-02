@@ -6,26 +6,22 @@ import (
 
 	"system/internal/platform/migrate"
 
-	"system/internal/auth/repo/postgre"
 	"system/internal/platform/db"
+	"system/internal/repo"
 )
 
 func main() {
 
 	database := db.ConnectDB()
 
-	
-
 	migrator := migrate.NewMigrator(database)
 	if err := migrator.Run(); err != nil {
 		log.Fatal("Migration failed:", err)
 	}
 
+	cont := repo.NewRepositoryContainer(database)
 
-
-	repo := postgre.NewUserRepository(database)
-
-	routers.SetupRouter(repo)
+	routers.SetupRouter(cont)
 
 	defer db.DisconnectDB(database)
 
