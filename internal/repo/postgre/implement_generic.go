@@ -60,3 +60,4 @@ func (r *GenericRepository[T]) Delete(ctx context.Context, id string) error {
 	var entity T
 	return r.db.WithContext(ctx).Where("id = ?", id).Delete(&entity).Error
 }
+

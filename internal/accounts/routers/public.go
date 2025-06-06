@@ -12,5 +12,7 @@ func AccountRouters(router *gin.Engine, accountRepo account.Account_inteface) {
 	r := router.Group("/api/v1/accounts")
 	r.POST("", handler.CreateAccountHandler(accountRepo))
 	r.GET("/:id", handler.GetAccountHandler(accountRepo))
+	r.GET("", handler.GetAllAccountsHandler(accountRepo))
 	r.PUT("/:id", handler.UpdateAccountHandler(accountRepo))
+	r.DELETE("/:id", handler.DeleteAccountHandler(accountRepo))
 }
