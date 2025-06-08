@@ -6,6 +6,8 @@ import (
 
 	account_routers "system/internal/accounts/routers"
 
+	transaction_routers "system/internal/transaction/routers"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
@@ -27,6 +29,8 @@ func SetupRouter(container *repo.RepositoryContainer) {
 	auth_routers.AdminRouter(r, container.User)
 
 	account_routers.AccountRouters(r, container.Account)
+
+	transaction_routers.TransactionRouters(r, container.Transaction)
 
 	r.Run(":4000")
 }

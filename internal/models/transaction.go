@@ -15,8 +15,9 @@ type Transaction struct {
 	Status    string  `gorm:"size:30;not null" json:"status"`
 	Reference string  `gorm:"not null" json:"reference"`
 
-	AccountID uint     `gorm:"not null"`             // Clave foránea
-	Account   *Account `gorm:"foreignKey:AccountID"` // Relación con la cuenta
+
+	AccountID string   `gorm:"not null" json:"account_id"` // Clave foránea
+	Account   *Account `gorm:"foreignKey:AccountID"`       // Relación con la cuenta
 
 	// Relación uno a muchos con Planning
 	Plans []Planning `gorm:"foreignKey:TransactionID;constraint:OnDelete:CASCADE" json:"plans,omitempty"`

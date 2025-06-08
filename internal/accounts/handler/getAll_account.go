@@ -24,7 +24,7 @@ func GetAllAccountsHandler(accountRepo account.Account_inteface) gin.HandlerFunc
 
 		// Si no hay cuentas, retornar array vacío en lugar de null
 		if len(accounts) == 0 {
-			c.JSON(http.StatusOK, []interface{}{})
+			c.JSON(http.StatusOK, []any{})
 			return
 		}
 
